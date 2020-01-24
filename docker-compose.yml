@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+
+  todo:
+    container_name: todo
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    depends_on:
+      - mongo
+    environment:
+      NODE_ENV: development
+      DATABASE_URL: 'mongodb://mongo:27017/todo'
+      PORT: 3003
+      JWT_SECRET: 'sdfj2/34l:$kasfklj23sad:lkj2132ds'
+    ports:
+      - 3003:3003
+    restart: always
+    command: npm run start:dev
+    volumes:
+      - ./:/home/nest_app
+      - /home/nest_app/node_modules
+
+  mongo:
+    container_name: mongo
+    image: mongo
+    expose:
+      - 27017
+    volumes:
+      - /data/db
